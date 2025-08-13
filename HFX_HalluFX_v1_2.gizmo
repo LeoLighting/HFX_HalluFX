@@ -1,0 +1,459 @@
+#! C:/Program Files/Nuke15.0v2/nuke-15.0.2.dll -nx
+version 15.0 v2
+Gizmo {
+ inputs 2
+ tile_color 0xa000ffff
+ label "\[value label_HFX]"
+ note_font_color 0xffffffff
+ addUserKnob {20 User}
+ addUserKnob {26 Title l "" +STARTLINE T "<font color=\"white\" face=\"Constantiai\" size=\"7\">Hallu FX v1.2                                      </font>\n"}
+ addUserKnob {26 ""}
+ addUserKnob {1 label_HFX l label}
+ addUserKnob {41 mix_2 l mix T Merge17.mix}
+ addUserKnob {26 _2 l "@b; Hallu Rays" T " "}
+ addUserKnob {26 "" -STARTLINE}
+ addUserKnob {41 center T GodRays1.center}
+ addUserKnob {14 power R 0 100}
+ power 20
+ addUserKnob {7 opacity R 0 4}
+ opacity 1
+ addUserKnob {41 white l color T Grade15.white}
+ addUserKnob {26 _4 l "@b;Motion FX" T " "}
+ addUserKnob {26 "" -STARTLINE}
+ addUserKnob {41 framesbehind l steps T TimeEcho2.framesbehind}
+ addUserKnob {41 scale_1 l "1st pass" T VectorBlur2.scale}
+ addUserKnob {41 scale_2 l "2nd pass" T VectorBlur3.scale}
+ addUserKnob {41 size l blend T Blur2.size}
+ addUserKnob {41 size_1 l "blend threshold" T Exp_Blur.size}
+ addUserKnob {26 _5 l "" +STARTLINE T ""}
+ addUserKnob {26 "" -STARTLINE}
+ addUserKnob {26 "" l mask T ""}
+ addUserKnob {41 maskChannelInput l "" -STARTLINE T Merge2.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T Merge2.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge2.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge2.fringe}
+ addUserKnob {41 mix T Merge2.mix}
+ addUserKnob {26 _1_1 l "" +STARTLINE T "<br><a href=\"https://www.leonelnguyen.fr\"><span><font color=\"white\" size=\"3\">Léonel NGUYEN | 2025</font>"}
+}
+ Input {
+  inputs 0
+  name mask
+  xpos 60
+  ypos 252
+  number 1
+ }
+ Dot {
+  name Dot43
+  xpos 94
+  ypos 395
+ }
+ Input {
+  inputs 0
+  name img
+  xpos -406
+  ypos 210
+ }
+ Dot {
+  name Dot33
+  xpos -372
+  ypos 316
+ }
+set Ndf3bc000 [stack 0]
+ Dot {
+  name Dot32
+  xpos -28
+  ypos 316
+ }
+ Merge2 {
+  inputs 2
+  operation mask
+  maskChannelInput -rgba.alpha
+  name Merge2
+  xpos -62
+  ypos 392
+  disable {{"!\[exists parent.input1]"}}
+ }
+ VectorGenerator {
+  motionEstimation Regularized
+  name VectorGenerator1
+  xpos -62
+  ypos 448
+ }
+ Dot {
+  name Dot46
+  xpos -28
+  ypos 518
+ }
+set Ndf38b000 [stack 0]
+ Dot {
+  name Dot50
+  xpos -95
+  ypos 518
+ }
+ GodRays {
+  channels {-rgba.red rgba.green -rgba.blue rgba.alpha}
+  scale {{1+parent.power*0.01}}
+  center {0 0}
+  name GodRays1
+  xpos -129
+  ypos 564
+ }
+ Dot {
+  name Dot76
+  xpos -95
+  ypos 615
+ }
+set Ndf38a400 [stack 0]
+ Dot {
+  name Dot54
+  xpos -294
+  ypos 615
+ }
+ Dot {
+  name Dot56
+  xpos -294
+  ypos 768
+ }
+push $Ndf38a400
+ Expression {
+  expr1 g>((r+b)/2)?((r+b)/2):g
+  name Expression4
+  xpos -129
+  ypos 643
+ }
+ Dot {
+  name Dot58
+  xpos -95
+  ypos 698
+ }
+set N33a0a800 [stack 0]
+ Dot {
+  name Dot59
+  xpos -204
+  ypos 698
+ }
+ Merge2 {
+  inputs 2
+  operation minus
+  name Merge5
+  xpos -238
+  ypos 765
+ }
+ Saturation {
+  saturation 0
+  name Saturation1
+  xpos -238
+  ypos 798
+ }
+ Grade {
+  white {0.905909 0.182267 1 1}
+  white_panelDropped true
+  multiply {{parent.opacity}}
+  name Grade15
+  label "opacity and color"
+  xpos -238
+  ypos 834
+ }
+ Dot {
+  name Dot66
+  xpos -204
+  ypos 892
+ }
+push $N33a0a800
+ Merge2 {
+  inputs 2
+  operation plus
+  name Plus2
+  xpos -129
+  ypos 889
+ }
+ Dot {
+  name Dot67
+  xpos -95
+  ypos 935
+ }
+push $Ndf38b000
+ Merge2 {
+  inputs 2
+  bbox B
+  invert_mask true
+  name Merge15
+  label GODRAYS
+  xpos -62
+  ypos 926
+ }
+ VectorBlur2 {
+  channels rgba
+  uv motion
+  mv_presets PRMan
+  blur_uv uniform
+  scale 5
+  soft_lines true
+  name VectorBlur2
+  label "MOTION PASS 1"
+  xpos -62
+  ypos 988
+ }
+ TimeEcho {
+  mode Average
+  framesbehind 4
+  name TimeEcho2
+  label "TRAIL LENGTH"
+  xpos -62
+  ypos 1092
+ }
+ VectorGenerator {
+  motionEstimation Regularized
+  name VectorGenerator3
+  label "MOTION PASS 2"
+  xpos -62
+  ypos 1174
+ }
+ VectorBlur2 {
+  channels rgba
+  uv motion
+  mv_presets PRMan
+  blur_uv uniform
+  scale 15
+  soft_lines true
+  name VectorBlur3
+  label "MOTION PASS 2"
+  xpos -62
+  ypos 1229
+ }
+ Dot {
+  name Dot68
+  xpos -28
+  ypos 1298
+ }
+set N62098800 [stack 0]
+ Dot {
+  name Dot3
+  xpos -28
+  ypos 1671
+ }
+push $Ndf3bc000
+ Dot {
+  name Dot1
+  xpos -372
+  ypos 1356
+ }
+set N62099000 [stack 0]
+ Dot {
+  name Dot2
+  xpos -262
+  ypos 1356
+ }
+ Dot {
+  name Dot37
+  xpos -262
+  ypos 1425
+ }
+push $Ndf3bc000
+ Dot {
+  name Dot38
+  xpos -441
+  ypos 316
+ }
+ Blur {
+  channels rgba
+  size 5
+  name Blur2
+  label "TRANSITION BLUR"
+  xpos -475
+  ypos 357
+ }
+ Grade {
+  channels alpha
+  multiply 0.98
+  name Grade14
+  xpos -475
+  ypos 393
+ }
+ Dot {
+  name Dot39
+  xpos -441
+  ypos 443
+ }
+ Dot {
+  name Dot4
+  xpos -79
+  ypos 1358
+  hide_input true
+ }
+push $N62098800
+ Dot {
+  name Dot72
+  xpos -173
+  ypos 1298
+ }
+ Multiply {
+  inputs 1+1
+  value 0
+  name Multiply1
+  xpos -207
+  ypos 1349
+  disable {{"!\[exists parent.input1]"}}
+ }
+ ChannelMerge {
+  inputs 2
+  operation in
+  name ChannelMerge3
+  xpos -207
+  ypos 1410
+ }
+ Grade {
+  channels rgba
+  blackpoint 0.07
+  name Grade16
+  xpos -207
+  ypos 1481
+ }
+ Group {
+  name Exp_Blur
+  tile_color 0xff3fff
+  xpos -207
+  ypos 1522
+  addUserKnob {20 User}
+  addUserKnob {41 size T Blur36.size}
+ }
+  Input {
+   inputs 0
+   name Input1
+   xpos 639
+   ypos -737
+  }
+  Dot {
+   name Dot144
+   xpos 673
+   ypos -646
+  }
+set N64d2f000 [stack 0]
+  Blur {
+   channels rgba
+   size 10
+   name Blur36
+   xpos 339
+   ypos -592
+  }
+  Dot {
+   name Dot4
+   xpos 373
+   ypos -450
+  }
+push $N64d2f000
+  Blur {
+   channels rgba
+   size {{parent.Blur36.size*2}}
+   name Blur38
+   xpos 443
+   ypos -590
+  }
+  Dot {
+   name Dot3
+   xpos 477
+   ypos -474
+  }
+push $N64d2f000
+  Blur {
+   channels rgba
+   size {{parent.Blur36.size*4}}
+   name Blur39
+   xpos 541
+   ypos -590
+  }
+  Dot {
+   name Dot2
+   xpos 575
+   ypos -498
+  }
+push $N64d2f000
+  Blur {
+   channels rgba
+   size {{parent.Blur36.size*8}}
+   name Blur1
+   xpos 639
+   ypos -588
+  }
+  Dot {
+   name Dot1
+   xpos 673
+   ypos -522
+  }
+push $N64d2f000
+  Blur {
+   channels rgba
+   size {{parent.Blur36.size*16}}
+   name Blur2
+   xpos 740
+   ypos -586
+  }
+  Merge2 {
+   inputs 2
+   operation plus
+   name Plus4
+   xpos 740
+   ypos -525
+  }
+  Merge2 {
+   inputs 2
+   operation plus
+   name Plus5
+   xpos 740
+   ypos -501
+  }
+  Merge2 {
+   inputs 2
+   operation plus
+   name Plus1
+   xpos 740
+   ypos -477
+  }
+  Merge2 {
+   inputs 2
+   operation plus
+   name Plus2
+   xpos 740
+   ypos -453
+  }
+  Output {
+   name Output1
+   selected true
+   xpos 740
+   ypos -345
+  }
+ end_group
+ Grade {
+  channels alpha
+  multiply 10
+  name Grade17
+  xpos -207
+  ypos 1561
+ }
+ Dot {
+  name Dot73
+  xpos -173
+  ypos 1620
+ }
+push $N62099000
+ Multiply {
+  inputs 1+1
+  value 0
+  name Multiply15
+  xpos -406
+  ypos 1611
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  invert_mask true
+  name Merge17
+  xpos -406
+  ypos 1668
+ }
+ Output {
+  name Output1
+  xpos -406
+  ypos 1793
+ }
+end_group

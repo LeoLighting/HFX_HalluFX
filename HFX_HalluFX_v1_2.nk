@@ -1,6 +1,3 @@
-set cut_paste_input [stack 0]
-version 16.0 v6
-push $cut_paste_input
 Group {
  name HFX_HalluFX
  tile_color 0xa000ffff

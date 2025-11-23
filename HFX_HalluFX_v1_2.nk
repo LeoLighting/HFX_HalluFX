@@ -1,38 +1,13 @@
-#! C:/Program Files/Nuke15.0v2/nuke-15.0.2.dll -nx
-version 15.0 v2
-Gizmo {
- inputs 2
+set cut_paste_input [stack 0]
+version 16.0 v6
+push $cut_paste_input
+Group {
+ name HFX_HalluFX
  tile_color 0xa000ffff
- label "\[value label_HFX]"
  note_font_color 0xffffffff
- addUserKnob {20 User}
- addUserKnob {26 Title l "" +STARTLINE T "<font color=\"white\" face=\"Constantiai\" size=\"7\">Hallu FX v1.2                                      </font>\n"}
- addUserKnob {26 ""}
- addUserKnob {1 label_HFX l label}
- addUserKnob {26 _2 l "@b; Hallu Rays" T " "}
- addUserKnob {26 "" -STARTLINE}
- addUserKnob {41 center T GodRays1.center}
- addUserKnob {14 power R 0 100}
- power 1
- addUserKnob {7 opacity}
- opacity 1
- addUserKnob {41 color_HFX l color T Grade15.white}
- addUserKnob {26 _4 l "@b;Motion FX" T " "}
- addUserKnob {26 "" -STARTLINE}
- addUserKnob {41 framesbehind l steps T TimeEcho2.framesbehind}
- addUserKnob {41 scale_1 l "1st pass" T VectorBlur2.scale}
- addUserKnob {41 scale_2 l "2nd pass" T VectorBlur3.scale}
- addUserKnob {41 size l blend T Blur2.size}
- addUserKnob {41 size_1 l "blend threshold" T Exp_Blur.size}
- addUserKnob {26 text l "@b; Mask"}
- addUserKnob {26 "" l mask T ""}
- addUserKnob {41 maskChannelInput l "" -STARTLINE T ChannelMerge_HFX.maskChannelInput}
- addUserKnob {41 inject -STARTLINE T ChannelMerge_HFX.inject}
- addUserKnob {41 invert_mask l invert -STARTLINE T ChannelMerge_HFX.invert_mask}
- addUserKnob {41 fringe -STARTLINE T ChannelMerge_HFX.fringe}
- addUserKnob {41 mix T ChannelMerge_HFX.mix}
- addUserKnob {26 _5 l "" +STARTLINE T ""}
- addUserKnob {26 _1_1 l "" +STARTLINE T "<br><a href=\"https://www.leonelnguyen.fr\"><span><font color=\"white\" size=\"3\">Léonel NGUYEN | 2025</font>"}
+ selected true
+ xpos -389
+ ypos 3510
 }
  Input {
   inputs 0
@@ -57,7 +32,7 @@ Gizmo {
   xpos -372
   ypos 316
  }
-set Nb6e9b800 [stack 0]
+set Nfcd0800 [stack 0]
  Dot {
   name Dot32
   xpos -28
@@ -86,7 +61,7 @@ set Nb6e9b800 [stack 0]
   xpos -28
   ypos 518
  }
-set N63474000 [stack 0]
+set N1a26000 [stack 0]
  Dot {
   name Dot50
   xpos -95
@@ -105,7 +80,7 @@ set N63474000 [stack 0]
   xpos -95
   ypos 615
  }
-set N63474c00 [stack 0]
+set N49b1e400 [stack 0]
  Dot {
   name Dot54
   xpos -294
@@ -116,7 +91,7 @@ set N63474c00 [stack 0]
   xpos -294
   ypos 768
  }
-push $N63474c00
+push $N49b1e400
  Expression {
   expr1 g>((r+b)/2)?((r+b)/2):g
   name Expression4
@@ -128,7 +103,7 @@ push $N63474c00
   xpos -95
   ypos 698
  }
-set N63475c00 [stack 0]
+set N15e67400 [stack 0]
  Dot {
   name Dot59
   xpos -204
@@ -160,7 +135,7 @@ set N63475c00 [stack 0]
   xpos -204
   ypos 892
  }
-push $N63475c00
+push $N15e67400
  Merge2 {
   inputs 2
   operation plus
@@ -173,7 +148,7 @@ push $N63475c00
   xpos -95
   ypos 935
  }
-push $N63474000
+push $N1a26000
  Merge2 {
   inputs 2
   bbox B
@@ -226,13 +201,13 @@ push $N63474000
   xpos -28
   ypos 1298
  }
-set N4528d800 [stack 0]
+set Nf4cea000 [stack 0]
  Dot {
   name Dot3
   xpos -28
   ypos 1671
  }
-push $Nb6e9b800
+push $Nfcd0800
  Dot {
   name Dot38
   xpos -441
@@ -263,7 +238,7 @@ push $Nb6e9b800
   ypos 1347
   hide_input true
  }
-push $N4528d800
+push $Nf4cea000
  Dot {
   name Dot72
   xpos -173
@@ -302,7 +277,7 @@ push $N4528d800
    xpos 673
    ypos -646
   }
-set Nb686e400 [stack 0]
+set N32158c00 [stack 0]
   Blur {
    channels rgba
    name Blur36
@@ -314,7 +289,7 @@ set Nb686e400 [stack 0]
    xpos 373
    ypos -450
   }
-push $Nb686e400
+push $N32158c00
   Blur {
    channels rgba
    size {{parent.Blur36.size*2}}
@@ -327,7 +302,7 @@ push $Nb686e400
    xpos 477
    ypos -474
   }
-push $Nb686e400
+push $N32158c00
   Blur {
    channels rgba
    size {{parent.Blur36.size*4}}
@@ -340,7 +315,7 @@ push $Nb686e400
    xpos 575
    ypos -498
   }
-push $Nb686e400
+push $N32158c00
   Blur {
    channels rgba
    size {{parent.Blur36.size*8}}
@@ -353,7 +328,7 @@ push $Nb686e400
    xpos 673
    ypos -522
   }
-push $Nb686e400
+push $N32158c00
   Blur {
    channels rgba
    size {{parent.Blur36.size*16}}
@@ -391,7 +366,6 @@ push $Nb686e400
   }
   Output {
    name Output1
-   selected true
    xpos 740
    ypos -345
   }
@@ -408,7 +382,7 @@ push $Nb686e400
   xpos -173
   ypos 1620
  }
-push $Nb6e9b800
+push $Nfcd0800
  Multiply {
   inputs 1+1
   value 0
@@ -425,13 +399,13 @@ push $Nb6e9b800
   xpos -406
   ypos 1668
  }
-set N405fcc00 [stack 0]
+set Na074c300 [stack 0]
  Output {
   name Output1
   xpos -406
   ypos 1793
  }
-push $N405fcc00
+push $Na074c300
  Viewer {
   frame_range 100-100
   monitorOutNDISenderName "NukeX - justABunchOfTools_v03 - Viewer1"

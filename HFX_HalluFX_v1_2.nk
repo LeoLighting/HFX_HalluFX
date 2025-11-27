@@ -1,10 +1,41 @@
+set cut_paste_input [stack 0]
+version 16.0 v6
+push $cut_paste_input
 Group {
  name HFX_HalluFX
  tile_color 0xa000ffff
+ label "\[value label_HFX]"
  note_font_color 0xffffffff
  selected true
- xpos -389
- ypos 3510
+ xpos 290
+ ypos 8
+ addUserKnob {20 User}
+ addUserKnob {26 Title l "" +STARTLINE T "<font color=\"white\" face=\"Constantiai\" size=\"7\">Hallu FX v1.2                                      </font>\n"}
+ addUserKnob {26 ""}
+ addUserKnob {1 label_HFX l label}
+ addUserKnob {41 mix_2 l mix T Merge17.mix}
+ addUserKnob {26 _2 l "@b; Hallu Rays" T " "}
+ addUserKnob {26 "" -STARTLINE}
+ addUserKnob {41 center T GodRays1.center}
+ addUserKnob {14 power R 0 100}
+ addUserKnob {7 opacity R 0 4}
+ addUserKnob {41 white l color T Grade15.white}
+ addUserKnob {26 _4 l "@b;Motion FX" T " "}
+ addUserKnob {26 "" -STARTLINE}
+ addUserKnob {41 framesbehind l steps T TimeEcho2.framesbehind}
+ addUserKnob {41 scale_1 l "1st pass" T VectorBlur2.scale}
+ addUserKnob {41 scale_2 l "2nd pass" T VectorBlur3.scale}
+ addUserKnob {41 size l blend T Blur2.size}
+ addUserKnob {41 size_1 l "blend threshold" T Exp_Blur.size}
+ addUserKnob {26 _5 l "" +STARTLINE T ""}
+ addUserKnob {26 "" -STARTLINE}
+ addUserKnob {26 "" l mask T ""}
+ addUserKnob {41 maskChannelInput l "" -STARTLINE T Merge2.maskChannelInput}
+ addUserKnob {41 inject -STARTLINE T Merge2.inject}
+ addUserKnob {41 invert_mask l invert -STARTLINE T Merge2.invert_mask}
+ addUserKnob {41 fringe -STARTLINE T Merge2.fringe}
+ addUserKnob {41 mix T Merge2.mix}
+ addUserKnob {26 _1_1 l "" +STARTLINE T "<br><a href=\"https://www.leonelnguyen.fr\"><span><font color=\"white\" size=\"3\">Léonel NGUYEN | 2025</font>"}
 }
  Input {
   inputs 0
@@ -16,7 +47,7 @@ Group {
  Dot {
   name Dot43
   xpos 94
-  ypos 390
+  ypos 395
  }
  Input {
   inputs 0
@@ -29,36 +60,32 @@ Group {
   xpos -372
   ypos 316
  }
-set Nfcd0800 [stack 0]
+set Nd34be400 [stack 0]
  Dot {
   name Dot32
   xpos -28
   ypos 316
  }
- ChannelMerge {
+ Merge2 {
   inputs 2
-  operation in
-  name ChannelMerge_HFX
+  operation mask
+  name Merge2
   xpos -62
-  ypos 375
- }
- Premult {
-  name Premult1
-  xpos -62
-  ypos 423
+  ypos 392
+  disable {{"!\[exists parent.input1]"}}
  }
  VectorGenerator {
   motionEstimation Regularized
   name VectorGenerator1
   xpos -62
-  ypos 466
+  ypos 448
  }
  Dot {
   name Dot46
   xpos -28
   ypos 518
  }
-set N1a26000 [stack 0]
+set Nd34bec00 [stack 0]
  Dot {
   name Dot50
   xpos -95
@@ -67,7 +94,6 @@ set N1a26000 [stack 0]
  GodRays {
   channels {-rgba.red rgba.green -rgba.blue rgba.alpha}
   scale {{1+parent.power*0.01}}
-  center {0 0}
   name GodRays1
   xpos -129
   ypos 564
@@ -77,7 +103,7 @@ set N1a26000 [stack 0]
   xpos -95
   ypos 615
  }
-set N49b1e400 [stack 0]
+set Nd34bf400 [stack 0]
  Dot {
   name Dot54
   xpos -294
@@ -88,7 +114,7 @@ set N49b1e400 [stack 0]
   xpos -294
   ypos 768
  }
-push $N49b1e400
+push $Nd34bf400
  Expression {
   expr1 g>((r+b)/2)?((r+b)/2):g
   name Expression4
@@ -100,7 +126,7 @@ push $N49b1e400
   xpos -95
   ypos 698
  }
-set N15e67400 [stack 0]
+set Nd3506000 [stack 0]
  Dot {
   name Dot59
   xpos -204
@@ -120,8 +146,8 @@ set N15e67400 [stack 0]
   ypos 798
  }
  Grade {
-  white {1 1 1 1}
   white_panelDropped true
+  multiply {{parent.opacity}}
   name Grade15
   label "opacity and color"
   xpos -238
@@ -132,7 +158,7 @@ set N15e67400 [stack 0]
   xpos -204
   ypos 892
  }
-push $N15e67400
+push $Nd3506000
  Merge2 {
   inputs 2
   operation plus
@@ -145,12 +171,11 @@ push $N15e67400
   xpos -95
   ypos 935
  }
-push $N1a26000
+push $Nd34bec00
  Merge2 {
   inputs 2
   bbox B
   invert_mask true
-  mix {{parent.opacity}}
   name Merge15
   label GODRAYS
   xpos -62
@@ -169,18 +194,17 @@ push $N1a26000
  }
  TimeEcho {
   mode Average
-  framesbehind 0
   name TimeEcho2
   label "TRAIL LENGTH"
   xpos -62
-  ypos 1058
+  ypos 1092
  }
  VectorGenerator {
   motionEstimation Regularized
   name VectorGenerator3
   label "MOTION PASS 2"
   xpos -62
-  ypos 1140
+  ypos 1174
  }
  VectorBlur2 {
   channels rgba
@@ -191,20 +215,37 @@ push $N1a26000
   name VectorBlur3
   label "MOTION PASS 2"
   xpos -62
-  ypos 1195
+  ypos 1229
  }
  Dot {
   name Dot68
   xpos -28
   ypos 1298
  }
-set Nf4cea000 [stack 0]
+set Nd3507800 [stack 0]
  Dot {
   name Dot3
   xpos -28
   ypos 1671
  }
-push $Nfcd0800
+push $Nd34be400
+ Dot {
+  name Dot1
+  xpos -372
+  ypos 1356
+ }
+set Nbd0ee000 [stack 0]
+ Dot {
+  name Dot2
+  xpos -262
+  ypos 1356
+ }
+ Dot {
+  name Dot37
+  xpos -262
+  ypos 1425
+ }
+push $Nd34be400
  Dot {
   name Dot38
   xpos -441
@@ -219,7 +260,7 @@ push $Nfcd0800
  }
  Grade {
   channels alpha
-  multiply 3
+  multiply 0.98
   name Grade14
   xpos -475
   ypos 393
@@ -231,22 +272,30 @@ push $Nfcd0800
  }
  Dot {
   name Dot4
-  xpos -73
-  ypos 1347
+  xpos -79
+  ypos 1358
   hide_input true
  }
-push $Nf4cea000
+push $Nd3507800
  Dot {
   name Dot72
   xpos -173
   ypos 1298
  }
+ Multiply {
+  inputs 1+1
+  value 0
+  name Multiply1
+  xpos -207
+  ypos 1349
+  disable {{"!\[exists parent.input1]"}}
+ }
  ChannelMerge {
   inputs 2
-  operation stencil
-  name ChannelMerge1
+  operation in
+  name ChannelMerge3
   xpos -207
-  ypos 1332
+  ypos 1410
  }
  Grade {
   channels rgba
@@ -259,7 +308,7 @@ push $Nf4cea000
   name Exp_Blur
   tile_color 0xff3fff
   xpos -207
-  ypos 1521
+  ypos 1522
   addUserKnob {20 User}
   addUserKnob {41 size T Blur36.size}
  }
@@ -274,7 +323,7 @@ push $Nf4cea000
    xpos 673
    ypos -646
   }
-set N32158c00 [stack 0]
+set Nbd0efc00 [stack 0]
   Blur {
    channels rgba
    name Blur36
@@ -286,7 +335,7 @@ set N32158c00 [stack 0]
    xpos 373
    ypos -450
   }
-push $N32158c00
+push $Nbd0efc00
   Blur {
    channels rgba
    size {{parent.Blur36.size*2}}
@@ -299,7 +348,7 @@ push $N32158c00
    xpos 477
    ypos -474
   }
-push $N32158c00
+push $Nbd0efc00
   Blur {
    channels rgba
    size {{parent.Blur36.size*4}}
@@ -312,7 +361,7 @@ push $N32158c00
    xpos 575
    ypos -498
   }
-push $N32158c00
+push $Nbd0efc00
   Blur {
    channels rgba
    size {{parent.Blur36.size*8}}
@@ -325,7 +374,7 @@ push $N32158c00
    xpos 673
    ypos -522
   }
-push $N32158c00
+push $Nbd0efc00
   Blur {
    channels rgba
    size {{parent.Blur36.size*16}}
@@ -379,7 +428,7 @@ push $N32158c00
   xpos -173
   ypos 1620
  }
-push $Nfcd0800
+push $Nbd0ee000
  Multiply {
   inputs 1+1
   value 0
@@ -389,25 +438,15 @@ push $Nfcd0800
  }
  Merge2 {
   inputs 2
-  operation under
   bbox B
   invert_mask true
   name Merge17
   xpos -406
   ypos 1668
  }
-set Na074c300 [stack 0]
  Output {
   name Output1
   xpos -406
   ypos 1793
- }
-push $Na074c300
- Viewer {
-  frame_range 100-100
-  monitorOutNDISenderName "NukeX - justABunchOfTools_v03 - Viewer1"
-  name Viewer1
-  xpos -580
-  ypos 1730
  }
 end_group
